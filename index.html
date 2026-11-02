@@ -1,0 +1,1128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MysteryBox 3.0</title>
+
+<style>
+:root {
+  --bg: #090914;
+  --panel: #151528;
+  --panel2: #201c38;
+  --purple: #a78bfa;
+  --pink: #e879f9;
+  --text: #f6f2ff;
+  --muted: #aaa4c2;
+  --border: #383052;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 550px;
+  height: 550px;
+  background: #7436c5;
+  filter: blur(150px);
+  opacity: .15;
+  border-radius: 50%;
+  top: -250px;
+  left: -200px;
+  pointer-events: none;
+  animation: floatGlow 9s ease-in-out infinite alternate;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  width: 450px;
+  height: 450px;
+  background: #b13dc9;
+  filter: blur(160px);
+  opacity: .10;
+  border-radius: 50%;
+  bottom: -250px;
+  right: -180px;
+  pointer-events: none;
+  animation: floatGlow 11s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatGlow {
+  from { transform: translate(0,0) scale(1); }
+  to { transform: translate(80px,60px) scale(1.25); }
+}
+
+header {
+  position: relative;
+  text-align: center;
+  padding: 35px 15px;
+  background: linear-gradient(120deg,#17112d,#241443,#111125);
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,transparent,#ffffff0b,transparent);
+  animation: shine 6s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  35%,100% { left: 150%; }
+}
+
+.logo {
+  font-size: clamp(30px,6vw,48px);
+  font-weight: 900;
+  color: #d8c5ff;
+  text-shadow: 0 0 12px #9d72ff,0 0 35px #8745ff;
+  margin: 0;
+  letter-spacing: 2px;
+}
+
+header p {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+main {
+  width: min(1050px,92%);
+  margin: 30px auto;
+  position: relative;
+  z-index: 1;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 13px;
+  margin-bottom: 30px;
+}
+
+.stat {
+  background: linear-gradient(145deg,#1d1a34,#11111f);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 10px;
+  text-align: center;
+  box-shadow: 0 8px 30px #0003;
+}
+
+.stat span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 25px;
+  color: #d3b8ff;
+}
+
+.section-title {
+  font-size: 25px;
+  margin-bottom: 8px;
+}
+
+.muted { color: var(--muted); }
+
+.progress {
+  height: 9px;
+  border-radius: 20px;
+  background: #28243b;
+  overflow: hidden;
+  margin: 15px 0 25px;
+}
+
+.progress div {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg,#8b5cf6,#e879f9);
+  box-shadow: 0 0 15px #a855f7;
+  transition: width .8s ease;
+}
+
+.cases {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(245px,1fr));
+  gap: 18px;
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  padding: 23px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: linear-gradient(145deg,#201b37,#11111f);
+  transition: transform .35s,border-color .35s,box-shadow .35s;
+  animation: cardIn .65s both;
+}
+
+.card:nth-child(2) { animation-delay: .12s; }
+.card:nth-child(3) { animation-delay: .24s; }
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg,transparent,#a78bfa12,transparent);
+  transform: translateX(-100%);
+  transition: .6s;
+}
+
+.card:hover::before { transform: translateX(100%); }
+
+.card:hover {
+  transform: translateY(-9px) scale(1.015);
+  border-color: var(--purple);
+  box-shadow: 0 12px 35px #8652d544;
+}
+
+.card h3 {
+  color: #d7c4ff;
+  font-size: 20px;
+}
+
+.card p { color: var(--muted); }
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(30px) scale(.96); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+button {
+  padding: 12px 17px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  background: linear-gradient(100deg,#7045cf,#a855f7);
+  cursor: pointer;
+  transition: transform .2s,box-shadow .2s,filter .2s;
+  margin: 5px 4px 5px 0;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px #a855f766;
+  filter: brightness(1.15);
+}
+
+button:active { transform: scale(.96); }
+
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.secondary {
+  background: #28243c;
+  border-color: #494263;
+}
+
+.hidden { display: none !important; }
+
+.screen {
+  animation: screenIn .45s ease both;
+}
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.case-screen {
+  background: linear-gradient(145deg,#1b1930,#11111f);
+  border: 1px solid var(--border);
+  padding: 25px;
+  border-radius: 19px;
+  margin-top: 20px;
+  box-shadow: 0 15px 45px #0005;
+}
+
+.case-screen p {
+  line-height: 1.8;
+  color: #d0cbe0;
+}
+
+.difficulty {
+  display: inline-block;
+  color: #d8b4fe;
+  background: #39255a;
+  padding: 7px 11px;
+  border-radius: 30px;
+  font-size: 12px;
+  margin-bottom: 8px;
+}
+
+.clue {
+  background: #26233d;
+  border: 1px solid #42375e;
+  border-left: 4px solid #a78bfa;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 12px 0;
+  animation: clueIn .45s ease both;
+}
+
+@keyframes clueIn {
+  from { opacity: 0; transform: translateX(-15px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.answers button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: #28243e;
+  border: 1px solid #48405f;
+  padding: 15px;
+  margin: 10px 0;
+}
+
+.answers button:hover { background: #493477; }
+
+#message {
+  min-height: 28px;
+  font-weight: bold;
+  color: #d8b4fe;
+}
+
+#message.success {
+  color: #86efac;
+  animation: celebrate .6s ease;
+}
+
+@keyframes celebrate {
+  0% { transform: scale(.7); opacity: 0; }
+  60% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Detective chat */
+
+.chat {
+  background: #121222;
+  border: 1px solid #514078;
+  border-radius: 17px;
+  margin-top: 30px;
+  overflow: hidden;
+  box-shadow: 0 0 25px #8b5cf622;
+}
+
+.chat-header {
+  padding: 17px;
+  background: linear-gradient(100deg,#38205e,#211637);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.bot-icon {
+  background: #8b5cf6;
+  border-radius: 50%;
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  box-shadow: 0 0 15px #a855f766;
+}
+
+.chat-header strong { display: block; }
+.chat-header small { color: #d0b9f7; }
+
+.chat-log {
+  height: 270px;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-behavior: smooth;
+}
+
+.bubble {
+  max-width: 88%;
+  width: fit-content;
+  padding: 12px 14px;
+  border-radius: 13px;
+  line-height: 1.55;
+  font-size: 14px;
+  white-space: pre-wrap;
+  animation: clueIn .3s ease;
+}
+
+.bot {
+  background: #29253f;
+  border: 1px solid #44385d;
+  align-self: flex-start;
+}
+
+.user {
+  background: linear-gradient(110deg,#6240a8,#8547bb);
+  align-self: flex-end;
+}
+
+.typing {
+  color: #c4b5fd;
+  padding: 5px 15px;
+  font-size: 13px;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  50% { opacity: .35; }
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid #302b46;
+}
+
+.chat-input-area input {
+  flex: 1;
+  min-width: 0;
+  padding: 13px;
+  border-radius: 9px;
+  border: 1px solid #4a4165;
+  outline: none;
+  background: #211d34;
+  color: white;
+  font-size: 14px;
+}
+
+.chat-input-area input:focus {
+  border-color: #b794f6;
+  box-shadow: 0 0 10px #8b5cf644;
+}
+
+.chat-input-area button { margin: 0; }
+
+.quick-questions {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  padding: 0 13px 13px;
+}
+
+.quick-questions button {
+  font-size: 11px;
+  padding: 8px 10px;
+  background: #302448;
+}
+
+.note {
+  color: #938aa9;
+  font-size: 12px;
+  padding: 0 15px 13px;
+}
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  background: hsl(var(--hue),85%,70%);
+  animation: fall 2.5s linear forwards;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+footer {
+  text-align: center;
+  padding: 35px 10px;
+  color: #77728e;
+  font-size: 13px;
+}
+
+@media(max-width:600px) {
+  .stats { gap: 7px; }
+  .stat { padding: 13px 5px; }
+  .stat strong { font-size: 19px; }
+  .stat span { font-size: 11px; }
+  .case-screen { padding: 17px; }
+  .chat-log { height: 250px; }
+  .chat-input-area { flex-wrap: wrap; }
+  .chat-input-area input { width: 100%; flex-basis: 70%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1 class="logo">🔎 MYSTERYBOX</h1>
+  <p>Every clue matters. Every mystery has a secret.</p>
+</header>
+
+<main>
+
+<div class="stats">
+  <div class="stat">
+    <span>⭐ TOTAL XP</span>
+    <strong id="xp">0</strong>
+  </div>
+  <div class="stat">
+    <span>🏆 LEVEL</span>
+    <strong id="level">1</strong>
+  </div>
+  <div class="stat">
+    <span>🕵️ CASES SOLVED</span>
+    <strong id="solved">0</strong>
+  </div>
+</div>
+
+<section id="home" class="screen">
+  <h2 class="section-title">📁 Investigation Center</h2>
+  <p class="muted" id="batchText"></p>
+
+  <div class="progress">
+    <div id="progressBar"></div>
+  </div>
+
+  <div class="cases" id="caseList"></div>
+
+  <div id="nextBatch" class="hidden case-screen">
+    <h2>🎉 Collection completed!</h2>
+    <p>Excellent detective work. A fresh collection is ready.</p>
+    <button onclick="nextCases()">Unlock new cases →</button>
+  </div>
+</section>
+
+<section id="game" class="hidden screen">
+  <button class="secondary" onclick="goHome()">← Investigation Center</button>
+
+  <div class="case-screen">
+    <span id="difficulty" class="difficulty"></span>
+    <h2 id="caseTitle"></h2>
+    <p id="story"></p>
+
+    <h3>🔍 Evidence Board</h3>
+    <div id="clues"></div>
+
+    <button id="clueButton" onclick="showClue()">Reveal next clue</button>
+
+    <h3>🧠 Who is responsible?</h3>
+    <p>Think carefully. The evidence is your greatest weapon.</p>
+
+    <div id="answers" class="answers"></div>
+    <p id="message"></p>
+    <button id="retry" class="secondary hidden" onclick="retryCase()">Try again</button>
+    <button id="continue" class="hidden" onclick="goHome()">Continue →</button>
+
+    <div class="chat">
+      <div class="chat-header">
+        <div class="bot-icon">🤖</div>
+        <div>
+          <strong>Detective Assistant</strong>
+          <small>Offline investigation helper • Online not required</small>
+        </div>
+      </div>
+
+      <div class="chat-log" id="chatLog">
+        <div class="bubble bot">
+          Hello, detective! I'm your investigation assistant.
+          Ask me about the suspects, clues or mystery. I can also give you hints!
+        </div>
+      </div>
+
+      <div class="quick-questions">
+        <button onclick="quickAsk('Give me a hint')">💡 Give me a hint</button>
+        <button onclick="quickAsk('Explain the evidence')">🔍 Explain evidence</button>
+        <button onclick="quickAsk('Who is suspicious?')">🕵️ Suspicious person?</button>
+      </div>
+
+      <div class="chat-input-area">
+        <input id="chatInput" type="text"
+          placeholder="Ask the detective something..."
+          maxlength="250">
+        <button onclick="sendMessage()">Send ➤</button>
+      </div>
+
+      <div class="note">
+        This is a programmed offline assistant, not a real AI model.
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="celebration" class="celebration"></div>
+
+<footer>
+  MysteryBox 3.0 • Think like a detective.
+</footer>
+
+<script>
+
+// ========================================
+// MYSTERY DATA
+// ========================================
+
+const namePool = [
+  "Alex", "Jordan", "Taylor", "Morgan",
+  "Riley", "Casey", "Jamie", "Avery",
+  "Robin", "Sam", "Drew", "Cameron"
+];
+
+const templates = [
+  {
+    title: "The Missing Diamond 💎",
+    difficulty: "Easy",
+    culpritIndex: 1,
+    story: "A priceless diamond disappeared from the city museum at 9 PM. Three people were investigated. One person's story does not match the security records.",
+    clues: [
+      "The security log records [CULPRIT]'s personal key being used at 8:55 PM.",
+      "[CULPRIT] claims to have left the museum at 8:40 PM.",
+      "The key used at 8:55 PM belongs only to [CULPRIT]."
+    ]
+  },
+  {
+    title: "The Last Train 🚆",
+    difficulty: "Medium",
+    culpritIndex: 2,
+    story: "A valuable suitcase disappeared at Central Station. Three passengers gave different accounts of their movements.",
+    clues: [
+      "The station camera recorded [CULPRIT] carrying the suitcase.",
+      "[CULPRIT] claimed they never entered the platform.",
+      "The platform entry record confirms [CULPRIT] entered shortly before departure."
+    ]
+  },
+  {
+    title: "The Secret Manuscript 📜",
+    difficulty: "Hard",
+    culpritIndex: 0,
+    story: "A rare manuscript vanished from an old library. Three employees were questioned about their movements.",
+    clues: [
+      "The library access record shows [CULPRIT]'s card was used at 7:15 PM.",
+      "[CULPRIT] claimed to have left the building at 6:30 PM.",
+      "The librarian confirmed the manuscript was still present just before that recorded entry."
+    ]
+  },
+  {
+    title: "The Missing Painting 🎨",
+    difficulty: "Medium",
+    culpritIndex: 1,
+    story: "A famous painting disappeared from an art gallery. The gallery alarm was disabled shortly before the disappearance.",
+    clues: [
+      "The alarm was disabled using [CULPRIT]'s personal access code.",
+      "[CULPRIT] claimed they never used the alarm system that evening.",
+      "The system record identifies [CULPRIT]'s unique code."
+    ]
+  },
+  {
+    title: "The Locked Laboratory 🧪",
+    difficulty: "Hard",
+    culpritIndex: 2,
+    story: "A confidential research notebook disappeared from a locked laboratory. The access log contains an unusual entry.",
+    clues: [
+      "The laboratory entry system recorded [CULPRIT]'s personal card at 6:10 PM.",
+      "[CULPRIT] said they were away from the laboratory all evening.",
+      "The laboratory's entry record matches [CULPRIT]'s card, not the other employees' cards."
+    ]
+  },
+  {
+    title: "The Forgotten Letter ✉️",
+    difficulty: "Easy",
+    culpritIndex: 0,
+    story: "A sealed letter disappeared from a private office. Three staff members had access to the building.",
+    clues: [
+      "[CULPRIT] was the last person recorded entering the office.",
+      "[CULPRIT] claimed not to have visited the office that day.",
+      "The office access log confirms the entry happened during the disappearance window."
+    ]
+  }
+];
+
+// ========================================
+// SAVED GAME DATA
+// ========================================
+
+function readSaved(key, fallback) {
+  try {
+    const value = localStorage.getItem(key);
+    return value === null ? fallback : JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
+let xp = readSaved("mb3XP", 0);
+let solved = readSaved("mb3Solved", 0);
+let batch = readSaved("mb3Batch", 1);
+let cases = readSaved("mb3Cases", null);
+let completed = readSaved("mb3Completed", []);
+
+let current = 0;
+let clueCount = 0;
+let answered = false;
+let hintCount = 0;
+
+// ========================================
+// RANDOM CASE GENERATOR
+// ========================================
+
+function shuffle(array) {
+  const result = [...array];
+
+  for (let i = result.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [result[i], result[j]] = [result[j], result[i]];
+  }
+
+  return result;
+}
+
+function makeCase(templateIndex) {
+  const template = templates[templateIndex];
+  const suspects = shuffle(namePool).slice(0, 3);
+  const culprit = suspects[template.culpritIndex];
+
+  const clues = template.clues.map(clue =>
+    clue.replaceAll("[CULPRIT]", culprit)
+  );
+
+  const answers = shuffle(suspects);
+
+  return {
+    title: template.title,
+    difficulty: template.difficulty,
+    story: template.story + " The people under investigation are " +
+      suspects.join(", ") + ".",
+    clues: clues,
+    answers: answers,
+    correct: answers.indexOf(culprit),
+    culprit: culprit
+  };
+}
+
+function createBatch() {
+  cases = [];
+
+  for (let i = 0; i < 3; i++) {
+    const templateIndex = (batch * 3 + i - 3) % templates.length;
+    cases.push(makeCase(templateIndex));
+  }
+
+  completed = [];
+  save();
+}
+
+function save() {
+  localStorage.setItem("mb3XP", JSON.stringify(xp));
+  localStorage.setItem("mb3Solved", JSON.stringify(solved));
+  localStorage.setItem("mb3Batch", JSON.stringify(batch));
+  localStorage.setItem("mb3Cases", JSON.stringify(cases));
+  localStorage.setItem("mb3Completed", JSON.stringify(completed));
+}
+
+if (
+  !Array.isArray(cases) ||
+  cases.length !== 3 ||
+  !Array.isArray(completed)
+) {
+  createBatch();
+}
+
+// ========================================
+// HOME SCREEN
+// ========================================
+
+function updateStats() {
+  document.getElementById("xp").textContent = xp;
+  document.getElementById("solved").textContent = solved;
+  document.getElementById("level").textContent =
+    Math.floor(xp / 300) + 1;
+}
+
+function renderHome() {
+  updateStats();
+
+  document.getElementById("batchText").textContent =
+    "Collection " + batch + " • " + completed.length + " of 3 cases solved";
+
+  document.getElementById("progressBar").style.width =
+    (completed.length / 3 * 100) + "%";
+
+  const list = document.getElementById("caseList");
+  list.innerHTML = "";
+
+  cases.forEach((item, index) => {
+    const done = completed.includes(index);
+
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = item.title;
+
+    const difficulty = document.createElement("p");
+    difficulty.textContent = "Difficulty: " + item.difficulty;
+
+    const status = document.createElement("p");
+    status.textContent = done ? "✅ Mystery solved" : "🔍 Investigation available";
+
+    const button = document.createElement("button");
+    button.textContent = done ? "Investigate again" : "Start investigation";
+    button.onclick = () => startCase(index);
+
+    card.append(title, difficulty, status, button);
+    list.appendChild(card);
+  });
+
+  document.getElementById("nextBatch").classList.toggle(
+    "hidden", completed.length !== 3
+  );
+}
+
+// ========================================
+// INVESTIGATION SCREEN
+// ========================================
+
+function startCase(index) {
+  current = index;
+  clueCount = 0;
+  hintCount = 0;
+  answered = false;
+
+  const item = cases[index];
+
+  document.getElementById("home").classList.add("hidden");
+  document.getElementById("game").classList.remove("hidden");
+
+  document.getElementById("game").classList.remove("screen");
+  void document.getElementById("game").offsetWidth;
+  document.getElementById("game").classList.add("screen");
+
+  document.getElementById("difficulty").textContent =
+    "Difficulty: " + item.difficulty;
+
+  document.getElementById("caseTitle").textContent = item.title;
+  document.getElementById("story").textContent = item.story;
+  document.getElementById("clues").innerHTML = "";
+  document.getElementById("message").textContent = "";
+  document.getElementById("message").className = "";
+
+  document.getElementById("retry").classList.add("hidden");
+  document.getElementById("continue").classList.add("hidden");
+  document.getElementById("clueButton").disabled = false;
+
+  const answers = document.getElementById("answers");
+  answers.innerHTML = "";
+
+  item.answers.forEach((answer, index) => {
+    const button = document.createElement("button");
+    button.textContent = "🔹 " + answer;
+    button.onclick = () => checkAnswer(index);
+    answers.appendChild(button);
+  });
+
+  document.getElementById("chatLog").innerHTML = "";
+
+  addChat(
+    "Hello, detective! I've reviewed this case. Ask me about suspects, evidence or hints. I'll help you think, but I won't immediately reveal the solution.",
+    "bot"
+  );
+}
+
+function showClue() {
+  if (answered) return;
+
+  const item = cases[current];
+
+  if (clueCount >= item.clues.length) {
+    document.getElementById("message").textContent =
+      "You've examined every piece of evidence!";
+    return;
+  }
+
+  const clue = document.createElement("div");
+  clue.className = "clue";
+  clue.textContent =
+    "Evidence " + (clueCount + 1) + ": " + item.clues[clueCount];
+
+  document.getElementById("clues").appendChild(clue);
+
+  clueCount++;
+}
+
+function checkAnswer(index) {
+  if (answered) return;
+
+  const item = cases[current];
+  const message = document.getElementById("message");
+
+  if (index === item.correct) {
+    answered = true;
+
+    message.textContent = "🎉 CASE SOLVED! +100 XP";
+    message.className = "success";
+
+    if (!completed.includes(current)) {
+      completed.push(current);
+      xp += 100;
+      solved++;
+    }
+
+    document.querySelectorAll("#answers button").forEach(button => {
+      button.disabled = true;
+    });
+
+    document.getElementById("retry").classList.add("hidden");
+    document.getElementById("continue").classList.remove("hidden");
+    document.getElementById("clueButton").disabled = true;
+
+    save();
+    updateStats();
+    celebrate();
+
+    addChat(
+      "Excellent detective work! The evidence points to " +
+      item.culprit + ". You've solved the case!",
+      "bot"
+    );
+  } else {
+    message.textContent =
+      "❌ That answer doesn't match the evidence. Investigate again!";
+    message.className = "";
+
+    document.getElementById("retry").classList.remove("hidden");
+  }
+}
+
+function retryCase() {
+  startCase(current);
+}
+
+function goHome() {
+  document.getElementById("game").classList.add("hidden");
+  document.getElementById("home").classList.remove("hidden");
+  renderHome();
+}
+
+function nextCases() {
+  if (completed.length !== 3) return;
+
+  batch++;
+  createBatch();
+  renderHome();
+
+  document.getElementById("nextBatch").classList.add("hidden");
+}
+
+// ========================================
+// OFFLINE DETECTIVE ASSISTANT
+// ========================================
+
+function addChat(text, type) {
+  const log = document.getElementById("chatLog");
+  const bubble = document.createElement("div");
+
+  bubble.className = "bubble " + type;
+  bubble.textContent = text;
+
+  log.appendChild(bubble);
+  log.scrollTop = log.scrollHeight;
+}
+
+function quickAsk(text) {
+  document.getElementById("chatInput").value = text;
+  sendMessage();
+}
+
+function detectiveReply(question) {
+  const item = cases[current];
+  const q = question.toLowerCase();
+
+  const names = item.answers;
+  const clues = item.clues;
+
+  if (
+    q.includes("hello") ||
+    q.includes("hi ") ||
+    q === "hi" ||
+    q.includes("hey")
+  ) {
+    return "Hello, detective! Ready to investigate? Ask me about the evidence or request a hint.";
+  }
+
+  if (
+    q.includes("hint") ||
+    q.includes("help me") ||
+    q.includes("stuck")
+  ) {
+    if (hintCount < clues.length) {
+      const hint = clues[hintCount];
+      hintCount++;
+
+      return "💡 Detective hint " + hintCount + " of " +
+        clues.length + ":\n\n" + hint +
+        "\n\nCompare this information with each suspect's story.";
+    }
+
+    return "You've received all my hints. Try comparing the suspects' statements with the complete evidence.";
+  }
+
+  if (
+    q.includes("explain") ||
+    q.includes("evidence") ||
+    q.includes("clue")
+  ) {
+    if (clueCount === 0) {
+      return "You haven't revealed any evidence yet! Click the Reveal next clue button first, then ask me to explain it.";
+    }
+
+    return "Let's examine the evidence you've revealed:\n\n" +
+      clues.slice(0, clueCount).map((c, i) =>
+        "Evidence " + (i + 1) + ": " + c
+      ).join("\n\n") +
+      "\n\nLook for contradictions between the records and the suspects' statements.";
+  }
+
+  if (
+    q.includes("suspicious") ||
+    q.includes("suspect") ||
+    q.includes("who do you think")
+  ) {
+    return "The people being investigated are " +
+      names.join(", ") +
+      ". I recommend checking who has a story that conflicts with the recorded evidence. I won't choose the culprit for you!";
+  }
+
+  if (
+    q.includes("answer") ||
+    q.includes("culprit") ||
+    q.includes("who did it") ||
+    q.includes("who is it")
+  ) {
+    if (answered) {
+      return "The case is already solved! The evidence identified " +
+        item.culprit + ".";
+    }
+
+    return "I won't spoil the mystery before you've solved it! Reveal the clues and compare each suspect's account. I can give you another hint if you need one.";
+  }
+
+  if (
+    q.includes("level") ||
+    q.includes("xp") ||
+    q.includes("points")
+  ) {
+    return "You currently have " + xp + " XP and are at level " +
+      (Math.floor(xp / 300) + 1) +
+      ". Solve a new mystery to earn 100 more XP!";
+  }
+
+  if (q.includes("thank")) {
+    return "You're welcome, detective! Every detail matters. 🕵️";
+  }
+
+  if (q.includes("easy") || q.includes("hard")) {
+    return "This case has " + item.difficulty +
+      " difficulty. Take your time and investigate each clue carefully.";
+  }
+
+  return "Interesting question! I can help with hints, suspects, clues, evidence, XP and explanations. Try asking me one of those things.";
+}
+
+function sendMessage() {
+  const input = document.getElementById("chatInput");
+  const question = input.value.trim();
+
+  if (!question) return;
+
+  addChat(question, "user");
+  input.value = "";
+
+  const log = document.getElementById("chatLog");
+  const typing = document.createElement("div");
+
+  typing.className = "typing";
+  typing.textContent = "Detective Assistant is thinking...";
+  log.appendChild(typing);
+  log.scrollTop = log.scrollHeight;
+
+  // A short visual pause makes the chat feel more natural.
+  setTimeout(() => {
+    typing.remove();
+    addChat(detectiveReply(question), "bot");
+  }, 450);
+}
+
+document.getElementById("chatInput").addEventListener(
+  "keydown", function(event) {
+    if (event.key === "Enter") sendMessage();
+  }
+);
+
+// ========================================
+// CELEBRATION EFFECT
+// ========================================
+
+function celebrate() {
+  const area = document.getElementById("celebration");
+  area.innerHTML = "";
+
+  for (let i = 0; i < 65; i++) {
+    const piece = document.createElement("div");
+    piece.className = "confetti";
+
+    piece.style.left = Math.random() * 100 + "%";
+    piece.style.animationDelay = Math.random() * .7 + "s";
+    piece.style.setProperty("--hue", Math.random() * 360);
+
+    area.appendChild(piece);
+  }
+
+  setTimeout(() => {
+    area.innerHTML = "";
+  }, 3500);
+}
+
+// ========================================
+// START GAME
+// ========================================
+
+updateStats();
+renderHome();
+
+</script>
+</body>
+</html>
